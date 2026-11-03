@@ -50,28 +50,29 @@ local function GetDirectionArrow(dx, dz)
     return arrows[octant]
 end
 
-AddClassPostConstruct("screens/playerhud", function(self)
-    if self.krampus_sack_tracker ~= nil or self.owner == nil then
+-- O HUD principal cria o widget de controles, que é o local adequado
+-- para adicionar elementos visuais personalizados.
+AddClassPostConstruct("widgets/controls", function(self)
+    local player = self.owner
+    if player == nil or self.krampus_sack_tracker ~= nil then
         return
     end
 
-    local player = self.owner
     local tracker = self:AddChild(Text(_G.CHATFONT, FONT_SIZE, "Krampus Sack: procurando..."))
     tracker:SetHAlign(_G.ANCHOR_MIDDLE)
     tracker:SetVAlign(_G.ANCHOR_MIDDLE)
     tracker:SetRegionSize(520, 50)
-    tracker:SetPosition(0, -180, 0)
+    tracker:SetPosition(0, -300, 0)
     tracker:Show()
 
     self.krampus_sack_tracker = tracker
 
     player:DoPeriodicTask(UPDATE_INTERVAL, function()
-        -- Não chama IsValid no widget Text: ele não implementa esse método.
         if self.krampus_sack_tracker ~= tracker then
             return
         end
 
-        if player:IsValid() == false then
+        if not player:IsValid() then
             tracker:Hide()
             return
         end
