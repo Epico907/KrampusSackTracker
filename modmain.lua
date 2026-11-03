@@ -50,22 +50,24 @@ local function GetDirectionArrow(dx, dz)
     return arrows[octant]
 end
 
--- O HUD principal cria o widget de controles, que é o local adequado
--- para adicionar elementos visuais personalizados.
 AddClassPostConstruct("widgets/controls", function(self)
     local player = self.owner
+    print("[KrampusSackTracker] widgets/controls carregado. Owner encontrado: " .. tostring(player ~= nil))
+
     if player == nil or self.krampus_sack_tracker ~= nil then
+        print("[KrampusSackTracker] HUD não criado: player nil ou rastreador já existe.")
         return
     end
 
-    local tracker = self:AddChild(Text(_G.CHATFONT, FONT_SIZE, "Krampus Sack: procurando..."))
+    local tracker = self:AddChild(Text(_G.CHATFONT, FONT_SIZE, "KRAMPUS SACK TRACKER: TESTE"))
     tracker:SetHAlign(_G.ANCHOR_MIDDLE)
     tracker:SetVAlign(_G.ANCHOR_MIDDLE)
-    tracker:SetRegionSize(520, 50)
-    tracker:SetPosition(0, -300, 0)
+    tracker:SetRegionSize(700, 60)
+    tracker:SetPosition(0, 250, 0)
     tracker:Show()
 
     self.krampus_sack_tracker = tracker
+    print("[KrampusSackTracker] Texto de teste adicionado ao HUD.")
 
     player:DoPeriodicTask(UPDATE_INTERVAL, function()
         if self.krampus_sack_tracker ~= tracker then
