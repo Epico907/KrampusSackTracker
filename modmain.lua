@@ -3,9 +3,9 @@ local Text = require "widgets/text"
 
 local UPDATE_INTERVAL = 1
 local SEARCH_RADIUS = 5000
-local FONT_SIZE = 28
+local FONT_SIZE = 25
 
-local function FindNearestLootStash(player)
+local function FindNearestEntity(player, prefab)
     if player == nil or player.Transform == nil then
         return nil
     end
@@ -16,7 +16,7 @@ local function FindNearestLootStash(player)
 
     for _, entity in pairs(_G.Ents) do
         if entity ~= nil
-            and entity.prefab == "klaus_sack"
+            and entity.prefab == prefab
             and entity.Transform ~= nil
             and (entity.IsValid == nil or entity:IsValid()) then
 
@@ -50,25 +50,34 @@ local function GetDirectionArrow(dx, dz)
     return arrows[octant]
 end
 
+local function GetTrackerLine(player, prefab, label, not_found)
+    local entity, distance, px, pz = FindNearestEntity(player, prefab)
+    if entity ~= nil then
+        local x, y, z = entity.Transform:GetWorldPosition()
+        return string.format("%s %s  |  %.0f", label, GetDirectionArrow(x - px, z - pz), distance)
+    end
+    return not_found
+end
+
 AddClassPostConstruct("widgets/controls", function(self)
     local player = self.owner
-    if player == nil or self.klaus_stash_tracker ~= nil then
+    if player == nil or self.klaus_event_tracker ~= nil then
         return
     end
 
-    -- Mantém o indicador na mesma posição já ajustada acima do inventário.
+    -- Mantém o indicador na posição já ajustada acima do inventário.
     local anchor = self.bottom_root or self
-    local tracker = anchor:AddChild(Text(_G.CHATFONT, FONT_SIZE, "Loot Stash: procurando..."))
+    local tracker = anchor:AddChild(Text(_G.CHATFONT, FONT_SIZE, "Loot Stash: procurando...\nDeer Antler: procurando..."))
     tracker:SetHAlign(_G.ANCHOR_MIDDLE)
     tracker:SetVAlign(_G.ANCHOR_MIDDLE)
-    tracker:SetRegionSize(520, 50)
+    tracker:SetRegionSize(560, 76)
     tracker:SetPosition(0, 115, 0)
     tracker:Show()
 
-    self.klaus_stash_tracker = tracker
+    self.klaus_event_tracker = tracker
 
     player:DoPeriodicTask(UPDATE_INTERVAL, function()
-        if self.klaus_stash_tracker ~= tracker then
+        if self.klaus_event_tracker ~= tracker then
             return
         end
 
@@ -77,13 +86,9 @@ AddClassPostConstruct("widgets/controls", function(self)
             return
         end
 
-        local stash, distance, px, pz = FindNearestLootStash(player)
-        if stash ~= nil then
-            local sx, sy, sz = stash.Transform:GetWorldPosition()
-            tracker:SetString(string.format("Loot Stash %s  |  %.0f", GetDirectionArrow(sx - px, sz - pz), distance))
-        else
-            tracker:SetString("Loot Stash: não detectada")
-        end
+        local stash_line = GetTrackerLine(player, "klaus_sack", "Loot Stash", "Loot Stash: não detectada")
+        local antler_line = GetTrackerLine(player, "deer_antler", "Deer Antler", "Deer Antler: não detectada")
+        tracker:SetString(stash_line .. "\n" .. antler_line)
         tracker:Show()
     end)
 end)
