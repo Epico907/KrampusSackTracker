@@ -1,7 +1,7 @@
-name = "Krampus Sack Tracker"
-description = "Mostra a direção aproximada e a distância do Krampus Sack mais próximo que o cliente consegue detectar."
+name = "Krampus Tracker"
+description = "Mostra no HUD a direção aproximada e a distância do Krampus mais próximo que o cliente consegue detectar."
 author = "Epico907"
-version = "0.1.1"
+version = "0.2.0"
 
 api_version = 10
 
