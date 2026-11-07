@@ -1,7 +1,7 @@
 name = "Klaus Loot Stash Tracker"
-description = "Mostra no HUD a direção aproximada e a distância da Loot Stash que invoca Klaus."
+description = "Rastreia a Loot Stash e a Deer Antler para o evento de Klaus."
 author = "Epico907"
-version = "0.3.0"
+version = "0.4.0"
 
 api_version = 10
 
