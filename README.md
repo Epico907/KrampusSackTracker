@@ -1,6 +1,6 @@
-# Krampus Tracker
+# Klaus Loot Stash Tracker
 
-Mod client-side para Don't Starve Together. Exibe no HUD a direção aproximada e a distância do Krampus (o chefe) mais próximo que o cliente consegue detectar.
+Mod client-side para Don't Starve Together. Exibe no HUD a direção aproximada e a distância da Loot Stash (bolsa trancada) usada para invocar Klaus.
 
 ## Instalação para teste
 
@@ -10,16 +10,16 @@ Mod client-side para Don't Starve Together. Exibe no HUD a direção aproximada 
 
 ## Como funciona
 
-- Procura entidades com prefab `krampus` presentes na tabela de entidades conhecida pelo cliente.
+- Procura entidades com prefab `klaus_sack` presentes na tabela de entidades conhecida pelo cliente.
 - Atualiza a indicação uma vez por segundo.
 - Mostra uma seta de direção aproximada e a distância em unidades do jogo.
-- Não rastreia a bolsa dropada (`krampus_sack`).
+- Não rastreia Klaus diretamente nem a Krampus Sack que ele pode deixar cair.
 - Não exige que todos os jogadores tenham o mod instalado.
 
 ## Limitações
 
-Este é um rastreador client-side, não um radar global. O cliente só consegue localizar entidades replicadas/conhecidas pela sua sessão. Portanto, não há garantia de detectar o Krampus em qualquer ponto do mundo, especialmente fora da área conhecida pelo cliente.
+Este é um rastreador client-side, não um radar global. O cliente só consegue localizar entidades replicadas/conhecidas pela sua sessão. Portanto, não há garantia de detectar a Loot Stash em qualquer ponto do mundo, especialmente fora da área conhecida pelo cliente.
 
 ## Versão
 
-0.2.0
+0.3.0
