@@ -1,7 +1,7 @@
-name = "Krampus Tracker"
-description = "Mostra no HUD a direção aproximada e a distância do Krampus mais próximo que o cliente consegue detectar."
+name = "Klaus Loot Stash Tracker"
+description = "Mostra no HUD a direção aproximada e a distância da Loot Stash que invoca Klaus."
 author = "Epico907"
-version = "0.2.0"
+version = "0.3.0"
 
 api_version = 10
 
