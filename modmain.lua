@@ -5,7 +5,7 @@ local UPDATE_INTERVAL = 1
 local SEARCH_RADIUS = 5000
 local FONT_SIZE = 28
 
-local function FindNearestSack(player)
+local function FindNearestKrampus(player)
     if player == nil or player.Transform == nil then
         return nil
     end
@@ -16,7 +16,7 @@ local function FindNearestSack(player)
 
     for _, entity in pairs(_G.Ents) do
         if entity ~= nil
-            and entity.prefab == "krampus_sack"
+            and entity.prefab == "krampus"
             and entity.Transform ~= nil
             and (entity.IsValid == nil or entity:IsValid()) then
 
@@ -52,24 +52,24 @@ end
 
 AddClassPostConstruct("widgets/controls", function(self)
     local player = self.owner
-    if player == nil or self.krampus_sack_tracker ~= nil then
+    if player == nil or self.krampus_tracker ~= nil then
         return
     end
 
-    -- bottom_root acompanha a área inferior do HUD e evita coordenadas
-    -- relativas à tela inteira que podem deslocar o texto para a lateral.
+    -- bottom_root acompanha a área inferior do HUD e mantém o texto
+    -- posicionado acima do inventário.
     local anchor = self.bottom_root or self
-    local tracker = anchor:AddChild(Text(_G.CHATFONT, FONT_SIZE, "Krampus Sack: procurando..."))
+    local tracker = anchor:AddChild(Text(_G.CHATFONT, FONT_SIZE, "Krampus: procurando..."))
     tracker:SetHAlign(_G.ANCHOR_MIDDLE)
     tracker:SetVAlign(_G.ANCHOR_MIDDLE)
     tracker:SetRegionSize(520, 50)
     tracker:SetPosition(0, 115, 0)
     tracker:Show()
 
-    self.krampus_sack_tracker = tracker
+    self.krampus_tracker = tracker
 
     player:DoPeriodicTask(UPDATE_INTERVAL, function()
-        if self.krampus_sack_tracker ~= tracker then
+        if self.krampus_tracker ~= tracker then
             return
         end
 
@@ -78,12 +78,12 @@ AddClassPostConstruct("widgets/controls", function(self)
             return
         end
 
-        local sack, distance, px, pz = FindNearestSack(player)
-        if sack ~= nil then
-            local sx, sy, sz = sack.Transform:GetWorldPosition()
-            tracker:SetString(string.format("Krampus Sack %s  |  %.0f", GetDirectionArrow(sx - px, sz - pz), distance))
+        local krampus, distance, px, pz = FindNearestKrampus(player)
+        if krampus ~= nil then
+            local kx, ky, kz = krampus.Transform:GetWorldPosition()
+            tracker:SetString(string.format("Krampus %s  |  %.0f", GetDirectionArrow(kx - px, kz - pz), distance))
         else
-            tracker:SetString("Krampus Sack: não detectado")
+            tracker:SetString("Krampus: não detectado")
         end
         tracker:Show()
     end)
